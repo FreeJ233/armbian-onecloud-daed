@@ -160,31 +160,34 @@ jobs:
         run: |
           # Don't update remote cache
           export GITHUB_ACTIONS=false
-          sudo --preserve-env \
+
+          cd build/
+
           # Remove disabling DEBUG_INFO.
-            sed -i 's/run_kernel_make olddefconfig/run_kernel_make KCONFIG_ALLCONFIG=.config alldefconfig/g' lib/functions/compilation/kernel-config.sh\
-            sed -i '/kernel_config_set_n DEBUG_INFO/d' lib/functions/compilation/armbian-kernel.sh\
+          sed -i 's/run_kernel_make olddefconfig/run_kernel_make KCONFIG_ALLCONFIG=.config alldefconfig/g' lib/functions/compilation/kernel-config.sh
+          sed -i '/kernel_config_set_n DEBUG_INFO/d' lib/functions/compilation/armbian-kernel.sh
 
-            # Trip modulues debug info.
-            sed -i 's/run_kernel_make_long_running/run_kernel_make_long_running INSTALL_MOD_STRIP=1/g' lib/functions/compilation/kernel.sh\
+          # Trip modulues debug info.
+          sed -i 's/run_kernel_make_long_running/run_kernel_make_long_running INSTALL_MOD_STRIP=1/g' lib/functions/compilation/kernel.sh
 
-            # Enable BTF.
-            sed -i '/CONFIG_DEBUG_INFO/d;/CONFIG_RING_BUFFER/d;/CONFIG_TRACING/d;/CONFIG_STACKTRACE/d;/CONFIG_NOP_TRACER/d;/CONFIG_BINARY_PRINTF/d;/CONFIG_EVENT_TRACING/d;/CONFIG_TRACE_CLOCK/d;/CONFIG_TASKS_RCU/d' config/kernel/linux-"$BOARD_FAMILY"-"$BRANCH".config\
-            echo "CONFIG_DEBUG_INFO=y
-            CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
-            CONFIG_DEBUG_INFO_COMPRESSED_ZLIB=y
-            CONFIG_DEBUG_INFO_BTF=y
-            CONFIG_KPROBE_EVENTS=y
-            CONFIG_BPF_EVENTS=y
-            CONFIG_RING_BUFFER=y
-            CONFIG_TRACING=y
-            CONFIG_STACKTRACE=y
-            CONFIG_NOP_TRACER=y
-            CONFIG_BINARY_PRINTF=y
-            CONFIG_EVENT_TRACING=y
-            CONFIG_TRACE_CLOCK=y
-            CONFIG_TASKS_RCU=y" >> config/kernel/linux-"$BOARD_FAMILY"-"$BRANCH".config\
-
+          # Enable BTF.
+          sed -i '/CONFIG_DEBUG_INFO/d;/CONFIG_RING_BUFFER/d;/CONFIG_TRACING/d;/CONFIG_STACKTRACE/d;/CONFIG_NOP_TRACER/d;/CONFIG_BINARY_PRINTF/d;/CONFIG_EVENT_TRACING/d;/CONFIG_TRACE_CLOCK/d;/CONFIG_TASKS_RCU/d' config/kernel/linux-"$BOARD_FAMILY"-"$BRANCH".config
+          echo "CONFIG_DEBUG_INFO=y
+          CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+          CONFIG_DEBUG_INFO_COMPRESSED_ZLIB=y
+          CONFIG_DEBUG_INFO_BTF=y
+          CONFIG_KPROBE_EVENTS=y
+          CONFIG_BPF_EVENTS=y
+          CONFIG_RING_BUFFER=y
+          CONFIG_TRACING=y
+          CONFIG_STACKTRACE=y
+          CONFIG_NOP_TRACER=y
+          CONFIG_BINARY_PRINTF=y
+          CONFIG_EVENT_TRACING=y
+          CONFIG_TRACE_CLOCK=y
+          CONFIG_TASKS_RCU=y" >> config/kernel/linux-"$BOARD_FAMILY"-"$BRANCH".config
+          
+          sudo --preserve-env \
             ./compile.sh kernel \
               ALLOW_ROOT=yes \
               BOARD=onecloud \
