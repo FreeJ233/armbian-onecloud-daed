@@ -15,28 +15,7 @@ jobs:
   prepare:
     name: Prepare
     runs-on: ubuntu-22.04
-    outputs:
-      env: ${{ steps.get.outputs.env }}
     steps:
-      - id: get
-        name: Get repositories information
-        run: |
-          TIME="$(curl https://api.github.com/repos/${SCRIPT_REPO}/actions/runs/${GITHUB_RUN_ID} | jq -r .created_at)"
-          TAG="ci-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S-%Z')"
-
-          SCRIPT_SHA=$(curl https://api.github.com/repos/${SCRIPT_REPO}/commits/${SCRIPT_REF} | jq -r .sha)
-          UBOOT_TAG=$(curl https://api.github.com/repos/${UBOOT_REPO}/releases/${UBOOT_RELEASE} | jq -r .tag_name)
-          ARMBIAN_SHA=$(curl https://api.github.com/repos/${ARMBIAN_REPO}/commits/${ARMBIAN_REF} | jq -r .sha)
-
-          cat <<EOF | sed -E 's/^  //' >>$GITHUB_ENV
-            TIME=$TIME
-            TAG=$TAG
-            SCRIPT_SHA=$SCRIPT_SHA
-            UBOOT_TAG=$UBOOT_TAG
-            ARMBIAN_SHA=$ARMBIAN_SHA
-          EOF
-          echo "env=$(cat $GITHUB_ENV | base64 -w 0)" >>$GITHUB_OUTPUT
-
       - name: SSH connection to Actions
         uses: P3TERX/ssh2actions@v1.0.0
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
