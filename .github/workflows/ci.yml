@@ -201,8 +201,8 @@ jobs:
           - bookworm # Debian 12
           # - sid # Debian unstable
         TYPE:
-          - minimal
-          # - cli
+          #- minimal
+           - cli
           # - desktop
         # include:
           # - TYPE: desktop
