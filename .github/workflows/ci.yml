@@ -148,7 +148,6 @@ jobs:
         run: |
           echo "::group::Download"
           curl -L -O "https://github.com/armbian/build/pull/{${PATCHES}}.patch"
-          curl -L -O "https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch"
           echo "::endgroup::"
 
           for file in *.patch; do
