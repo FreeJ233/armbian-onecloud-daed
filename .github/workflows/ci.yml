@@ -160,7 +160,7 @@ jobs:
         run: |
          rm -rf ./config/kernel/linux-meson-current.config
          wget -P ./config/kernel https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/config/kernel/linux-meson-current.config
-         wget -P ./patch/kernel/archive/meson-6.6 https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch
+         #wget -P ./patch/kernel/archive/meson-6.6 https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch
 
       - name: Build
         run: |
