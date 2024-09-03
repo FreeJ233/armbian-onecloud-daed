@@ -156,6 +156,11 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: Add Onecloud patch and config
+        run: |
+         cp -rf /config/kernel/ build/config/kernel
+         cp -rf /patch/kernel/archive/meson-6.6 build/patch/kernel/archive/meson-6.6
+
       - name: Build
         run: |
           # Don't update remote cache
