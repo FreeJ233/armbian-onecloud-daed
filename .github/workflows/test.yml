@@ -6,7 +6,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: 'false'
+        default: 'true'
 
 env:
   SCRIPT_REPO: ${{ github.repository }}
@@ -18,8 +18,6 @@ env:
   ARMBIAN_REF: main
   PATCHES: 4077,5076
   PATCHES_DISABLED: 5082
-  CONFIG_FILE: config/kernel/linux-meson-current.config
-  DIY_PATCH: patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch
 
 permissions:
   contents: write
@@ -167,8 +165,8 @@ jobs:
 
       - name: Add Onecloud patch and config
         run: |
-         cp -rf $CONFIG_FILE config/kernel
-         cp -rf $DIY_PATCH patch/kernel/archive/meson-6.6
+         wget -P /config/kernel https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/config/kernel/linux-meson-current.config
+         wget -P /patch/kernel/archive/meson-6.6 https://github.com/FreeJ233/armbian-onecloud-daed/blob/readme/patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch
 
       - name: Build
         run: |
