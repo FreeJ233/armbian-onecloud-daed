@@ -18,6 +18,8 @@ env:
   ARMBIAN_REF: main
   PATCHES: 4077,5076
   PATCHES_DISABLED: 5082
+  CONFIG_FILE: config/kernel/linux-meson-current.config
+  DIY_PATCH: patch/kernel/archive/meson-6.6/onecloud-fixup-call-args.patch
 
 permissions:
   contents: write
@@ -165,8 +167,8 @@ jobs:
 
       - name: Add Onecloud patch and config
         run: |
-         cp -rf /config/kernel/ build/config/kernel
-         cp -rf /patch/kernel/archive/meson-6.6 build/patch/kernel/archive/meson-6.6
+         cp -rf $CONFIG_FILE config/kernel
+         cp -rf $DIY_PATCH patch/kernel/archive/meson-6.6
 
       - name: Build
         run: |
